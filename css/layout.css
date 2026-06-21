@@ -185,3 +185,41 @@
 .text-error { color: var(--error); }
 .tracking-tight { letter-spacing: var(--tracking-tight); }
 .tracking-wide { letter-spacing: var(--tracking-wide); }
+
+/* ---- Lesson View ---- */
+.lesson-section {
+  max-width: 720px;
+}
+.lesson-section p {
+  font-size: var(--text-base);
+  line-height: 1.75;
+}
+.lesson-section .card pre {
+  font-size: var(--text-sm);
+}
+.lesson-section .card h3 {
+  font-size: var(--text-sm);
+  color: var(--accent-text);
+  margin-bottom: var(--space-2);
+}
+.lesson-header__info {
+  border-left: 3px solid var(--accent);
+  padding-left: var(--space-4);
+}
+.puzzle-card {
+  border: 1px solid var(--border-default);
+}
+.puzzle-code pre {
+  background: var(--surface-0);
+  border: 1px solid var(--border-subtle);
+}
+.puzzle-option.is-active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

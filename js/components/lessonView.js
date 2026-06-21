@@ -109,150 +109,31 @@ export function renderLessonView(worldId, lessonId) {
 }
 
 function renderLessonContent(lesson) {
-  // Lesson content based on concepts
-  const contentMap = {
-    'declaring-variables': `
+  if (!lesson.content || lesson.content.length === 0) {
+    return `
       <div class="lesson-section">
-        <h2 class="text-xl font-bold mb-4">What are Variables?</h2>
-        <p class="text-secondary mb-4">Variables are containers that store data values. Think of them as labeled boxes where you can put things.</p>
-
-        <div class="concept-demo card" style="margin: var(--space-6) 0;">
-          <h3 class="font-semibold mb-3">Interactive Demo</h3>
-          <div class="demo-area" style="display: flex; gap: var(--space-6); align-items: center;">
-            <div class="variable-box" style="padding: var(--space-4); background: var(--surface-2); border-radius: var(--radius-lg); border: 2px solid var(--accent); min-width: 150px; text-align: center;">
-              <div class="text-xs text-tertiary mb-1">let age =</div>
-              <div class="text-2xl font-bold" id="demo-value">25</div>
-            </div>
-            <div>
-              <p class="text-sm text-secondary mb-2">Try changing the value:</p>
-              <input type="range" id="demo-slider" min="1" max="100" value="25" class="input" style="width: 200px;">
-            </div>
-          </div>
-        </div>
-
-        <h2 class="text-xl font-bold mb-4">Three Ways to Declare Variables</h2>
-
-        <div class="grid gap-4" style="grid-template-columns: repeat(3, 1fr);">
-          <div class="card">
-            <h3 class="font-semibold text-accent mb-2">let</h3>
-            <pre style="font-size: var(--text-sm);"><code>let score = 100;
-score = 200; // OK</code></pre>
-            <p class="text-xs text-secondary mt-2">Can be reassigned. Block-scoped.</p>
-          </div>
-
-          <div class="card">
-            <h3 class="font-semibold text-success mb-2">const</h3>
-            <pre style="font-size: var(--text-sm);"><code>const pi = 3.14;
-pi = 3; // Error!</code></pre>
-            <p class="text-xs text-secondary mt-2">Cannot be reassigned. Block-scoped.</p>
-          </div>
-
-          <div class="card">
-            <h3 class="font-semibold text-warning mb-2">var</h3>
-            <pre style="font-size: var(--text-sm);"><code>var name = "Old";
-var name = "New"; // OK</code></pre>
-            <p class="text-xs text-secondary mt-2">Function-scoped. Avoid in modern code.</p>
-          </div>
-        </div>
+        <p class="text-secondary">Interactive content for this lesson is coming soon. Try the puzzles below!</p>
       </div>
-    `,
+    `;
+  }
 
-    'function-basics': `
-      <div class="lesson-section">
-        <h2 class="text-xl font-bold mb-4">What are Functions?</h2>
-        <p class="text-secondary mb-4">Functions are reusable blocks of code that perform a specific task. Think of them as machines: you put something in, and they give you something out.</p>
+  let html = '<div class="lesson-section">';
 
-        <div class="concept-demo card" style="margin: var(--space-6) 0;">
-          <h3 class="font-semibold mb-3">Interactive Demo</h3>
-          <div class="demo-area" style="display: flex; gap: var(--space-6); align-items: center; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 200px;">
-              <label class="text-sm text-secondary">Input A:</label>
-              <input type="number" id="func-a" value="3" class="input" style="width: 100%; margin-top: var(--space-1);">
-            </div>
-            <div style="flex: 1; min-width: 200px;">
-              <label class="text-sm text-secondary">Input B:</label>
-              <input type="number" id="func-b" value="4" class="input" style="width: 100%; margin-top: var(--space-1);">
-            </div>
-            <div style="text-align: center; padding: var(--space-4); background: var(--surface-2); border-radius: var(--radius-lg); min-width: 100px;">
-              <div class="text-xs text-tertiary mb-1">Result</div>
-              <div class="text-2xl font-bold" id="func-result">7</div>
-            </div>
-          </div>
+  for (const block of lesson.content) {
+    if (block.type === 'text') {
+      html += `<p class="text-secondary mb-4" style="line-height: 1.7;">${block.body}</p>`;
+    } else if (block.type === 'code') {
+      html += `
+        <div class="card mb-4" style="margin-bottom: var(--space-5);">
+          ${block.title ? `<h3 class="font-semibold mb-2">${block.title}</h3>` : ''}
+          <pre><code>${escapeHtml(block.body)}</code></pre>
         </div>
+      `;
+    }
+  }
 
-        <h2 class="text-xl font-bold mb-4">Function Syntax</h2>
-
-        <div class="card mb-4">
-          <h3 class="font-semibold mb-2">Function Declaration</h3>
-          <pre><code>function greet(name) {
-  return "Hello, " + name + "!";
-}
-
-console.log(greet("Alice")); // "Hello, Alice!"</code></pre>
-        </div>
-
-        <div class="card">
-          <h3 class="font-semibold mb-2">Arrow Function</h3>
-          <pre><code>const add = (a, b) => a + b;
-
-console.log(add(3, 4)); // 7</code></pre>
-        </div>
-      </div>
-    `,
-
-    'creating-arrays': `
-      <div class="lesson-section">
-        <h2 class="text-xl font-bold mb-4">What are Arrays?</h2>
-        <p class="text-secondary mb-4">Arrays are ordered collections of values. Each value has an index (position), starting from 0.</p>
-
-        <div class="concept-demo card" style="margin: var(--space-6) 0;">
-          <h3 class="font-semibold mb-3">Interactive Demo</h3>
-          <div class="demo-area">
-            <div id="array-demo" style="display: flex; gap: var(--space-2); margin-bottom: var(--space-4);">
-              <div class="array-item" style="padding: var(--space-3); background: var(--surface-2); border-radius: var(--radius-md); text-align: center; min-width: 60px;">
-                <div class="text-xs text-tertiary">[0]</div>
-                <div class="font-mono">"red"</div>
-              </div>
-              <div class="array-item" style="padding: var(--space-3); background: var(--surface-2); border-radius: var(--radius-md); text-align: center; min-width: 60px;">
-                <div class="text-xs text-tertiary">[1]</div>
-                <div class="font-mono">"green"</div>
-              </div>
-              <div class="array-item" style="padding: var(--space-3); background: var(--surface-2); border-radius: var(--radius-md); text-align: center; min-width: 60px;">
-                <div class="text-xs text-tertiary">[2]</div>
-                <div class="font-mono">"blue"</div>
-              </div>
-            </div>
-            <button class="btn btn--secondary btn--sm" id="add-item">
-              ${icon('plus', 14)} Add Item
-            </button>
-          </div>
-        </div>
-
-        <h2 class="text-xl font-bold mb-4">Common Array Methods</h2>
-
-        <div class="grid gap-4" style="grid-template-columns: repeat(2, 1fr);">
-          <div class="card">
-            <h3 class="font-semibold mb-2">push() & pop()</h3>
-            <pre style="font-size: var(--text-sm);"><code>const arr = [1, 2, 3];
-arr.push(4);    // [1,2,3,4]
-arr.pop();      // [1,2,3]</code></pre>
-          </div>
-          <div class="card">
-            <h3 class="font-semibold mb-2">shift() & unshift()</h3>
-            <pre style="font-size: var(--text-sm);"><code>const arr = [1, 2, 3];
-arr.unshift(0); // [0,1,2,3]
-arr.shift();    // [1,2,3]</code></pre>
-          </div>
-        </div>
-      </div>
-    `,
-  };
-
-  return contentMap[lesson.id] || `
-    <div class="lesson-section">
-      <p class="text-secondary">Interactive content for this lesson is coming soon. Try the puzzles below!</p>
-    </div>
-  `;
+  html += '</div>';
+  return html;
 }
 
 function renderPuzzle(puzzle, index) {
