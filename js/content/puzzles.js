@@ -730,6 +730,177 @@ export const puzzles = {
       hints: ['Think about CRUD operations: Create, Read, Update, Delete'],
     },
   ],
+
+  'selecting-elements': [
+    {
+      id: 'p-sel-1',
+      type: 'fill-blank',
+      title: 'Query Selector',
+      code: `const el = document.___(".card .title");`,
+      blanks: ['querySelector', 'getElementById', 'querySelectorAll'],
+      correct: 'querySelector',
+      explanation: 'querySelector finds the first element matching a CSS selector.',
+      xp: 10,
+      hints: ['Which method uses CSS selectors to find elements?'],
+    },
+    {
+      id: 'p-sel-2',
+      type: 'predict-output',
+      title: 'querySelectorAll Count',
+      code: `// Assuming: <ul><li>A</li><li>B</li><li>C</li></ul>\nconst items = document.querySelectorAll("li");\nconsole.log(items.length);`,
+      expected: ['3'],
+      explanation: 'querySelectorAll returns all matching elements as a NodeList.',
+      xp: 10,
+      hints: ['How many <li> elements are there?'],
+    },
+  ],
+
+  'manipulating-dom': [
+    {
+      id: 'p-md-1',
+      type: 'predict-output',
+      title: 'textContent vs innerHTML',
+      code: `const div = document.createElement("div");\ndiv.textContent = "<b>Hello</b>";\nconsole.log(div.innerHTML);`,
+      expected: ['&lt;b&gt;Hello&lt;/b&gt;'],
+      explanation: 'textContent escapes HTML tags and shows them as plain text.',
+      xp: 15,
+      hints: ['textContent treats content as plain text, not HTML'],
+    },
+    {
+      id: 'p-md-2',
+      type: 'predict-output',
+      title: 'ClassList Toggle',
+      code: `const div = document.createElement("div");\ndiv.classList.add("active");\ndiv.classList.toggle("active");\ndiv.classList.toggle("active");\nconsole.log(div.classList.contains("active"));`,
+      expected: ['true'],
+      explanation: 'add makes it active. toggle removes it. toggle adds it again. contains returns true.',
+      xp: 15,
+      hints: ['toggle removes if present, adds if absent'],
+    },
+  ],
+
+  'event-object': [
+    {
+      id: 'p-eo-1',
+      type: 'predict-output',
+      title: 'preventDefault',
+      code: `const form = document.createElement("form");\nlet submitted = false;\nform.addEventListener("submit", (e) => {\n  e.preventDefault();\n  submitted = true;\n});\nform.dispatchEvent(new Event("submit"));\nconsole.log(submitted);`,
+      expected: ['true'],
+      explanation: 'preventDefault stops page reload but the handler still runs and sets submitted to true.',
+      xp: 15,
+      hints: ['preventDefault stops the default action but not the handler'],
+    },
+  ],
+
+  'event-delegation': [
+    {
+      id: 'p-ed-1',
+      type: 'predict-output',
+      title: 'Event Bubbling',
+      code: `const grandparent = document.createElement("div");\nconst parent = document.createElement("div");\nconst child = document.createElement("button");\nparent.appendChild(child);\ngrandparent.appendChild(parent);\n\nlet log = [];\ngrandparent.addEventListener("click", () => log.push("GP"));\nparent.addEventListener("click", () => log.push("P"));\nchild.addEventListener("click", () => log.push("C"));\nchild.click();\nconsole.log(log.join(", "));`,
+      expected: ['C, P, GP'],
+      explanation: 'Events bubble up: child fires first, then parent, then grandparent.',
+      xp: 15,
+      hints: ['Events propagate from the target up through ancestors'],
+    },
+  ],
+
+  'callbacks-promises': [
+    {
+      id: 'p-cp-1',
+      type: 'predict-output',
+      title: 'Promise Resolution',
+      code: `const p = new Promise((resolve) => {\n  resolve("done");\n});\np.then(v => console.log(v));`,
+      expected: ['done'],
+      explanation: 'resolve("done") makes the promise fulfill with "done", which .then() receives.',
+      xp: 15,
+      hints: ['resolve() passes a value to the next .then()'],
+    },
+    {
+      id: 'p-cp-2',
+      type: 'predict-output',
+      title: 'Promise Chain',
+      code: `Promise.resolve(1)\n  .then(x => x + 1)\n  .then(x => x * 2)\n  .then(x => console.log(x));`,
+      expected: ['4'],
+      explanation: '1→2 (add 1) → 4 (multiply by 2). Each .then() transforms the value.',
+      xp: 20,
+      hints: ['Each then() returns a new promise with the transformed value'],
+    },
+  ],
+
+  'async-await': [
+    {
+      id: 'p-aa-1',
+      type: 'predict-output',
+      title: 'Async Function',
+      code: `async function getData() {\n  return 42;\n}\ngetData().then(v => console.log(v));`,
+      expected: ['42'],
+      explanation: 'async functions always return a Promise. return 42 becomes Promise.resolve(42).',
+      xp: 15,
+      hints: ['async functions wrap return values in a Promise'],
+    },
+    {
+      id: 'p-aa-2',
+      type: 'predict-output',
+      title: 'Await Behavior',
+      code: `async function run() {\n  const a = await Promise.resolve(10);\n  const b = await Promise.resolve(20);\n  console.log(a + b);\n}\nrun();`,
+      expected: ['30'],
+      explanation: 'await unwraps the Promise. a=10, b=20, sum=30.',
+      xp: 15,
+      hints: ['await pauses until the Promise resolves, then returns its value'],
+    },
+  ],
+
+  'fetch-api': [
+    {
+      id: 'p-fa-1',
+      type: 'predict-output',
+      title: 'Fetch Response',
+      code: `const response = new Response("Hello", {\n  status: 200,\n  headers: { "Content-Type": "text/plain" }\n});\nconsole.log(response.ok);`,
+      expected: ['true'],
+      explanation: 'Status 200 is in the 200-299 range, so response.ok is true.',
+      xp: 15,
+      hints: ['ok is true when status is between 200 and 299'],
+    },
+    {
+      id: 'p-fa-2',
+      type: 'fill-blank',
+      title: 'JSON Body',
+      code: `await fetch("/api", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: ___({ name: "Alice" })\n});`,
+      blanks: ['JSON.stringify', 'JSON.parse', 'String'],
+      correct: 'JSON.stringify',
+      explanation: 'fetch requires the body to be a string when sending JSON.',
+      xp: 15,
+      hints: ['Convert the object to a JSON string before sending'],
+    },
+  ],
+
+  'canvas-basics': [
+    {
+      id: 'p-cb-1',
+      type: 'fill-blank',
+      title: 'Canvas Context',
+      code: `const canvas = document.querySelector("canvas");\nconst cx = canvas.___("2d");`,
+      blanks: ['getContext', 'getContext2D', 'createContext'],
+      correct: 'getContext',
+      explanation: 'getContext("2d") returns the 2D drawing context for a canvas.',
+      xp: 10,
+      hints: ['Which method gets the drawing interface from a canvas?'],
+    },
+  ],
+
+  'file-system': [
+    {
+      id: 'p-fs-1',
+      type: 'fill-blank',
+      title: 'Read File',
+      code: `import { ___ } from "node:fs/promises";\nconst text = await readFile("file.txt", "utf8");`,
+      blanks: ['readFile', 'openFile', 'loadFile'],
+      correct: 'readFile',
+      explanation: 'readFile is the function for reading file contents in Node.js.',
+      xp: 10,
+      hints: ['What operation do you want to perform on the file?'],
+    },
+  ],
 };
 
 export function getPuzzlesForLesson(lessonId) {
