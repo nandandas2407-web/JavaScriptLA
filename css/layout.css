@@ -56,6 +56,15 @@
   gap: var(--space-1);
 }
 
+.header__nav .nav-btn {
+  text-decoration: none;
+}
+
+.header__nav .nav-btn.is-active {
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
 .header__right {
   display: flex;
   align-items: center;

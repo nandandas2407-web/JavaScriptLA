@@ -4,6 +4,7 @@
 
 import { store } from './stores/store.js';
 import { renderHeader } from './components/header.js';
+import { renderDashboard } from './components/dashboard.js';
 import { renderWorldMap } from './components/worldMap.js';
 import { renderWorldView } from './components/worldView.js';
 import { renderLessonView } from './components/lessonView.js';
@@ -38,6 +39,8 @@ class App {
 
     // Parse route
     if (hash === '#/' || hash === '#') {
+      this.renderDashboard();
+    } else if (hash === '#/map') {
       this.renderMap();
     } else if (hash.startsWith('#/world/')) {
       const worldId = hash.split('#/world/')[1];
@@ -57,6 +60,11 @@ class App {
 
     // Scroll to top
     main.scrollTop = 0;
+  }
+
+  renderDashboard() {
+    renderHeader();
+    renderDashboard();
   }
 
   renderMap() {

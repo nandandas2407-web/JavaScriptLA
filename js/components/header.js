@@ -8,6 +8,13 @@ import { icon } from '../lib/icons.js';
 export function renderHeader() {
   const header = document.getElementById('header');
   const state = store.state;
+  const currentHash = window.location.hash || '#/';
+
+  const isActive = (route) => {
+    if (route === '#/' && (currentHash === '#/' || currentHash === '')) return 'is-active';
+    if (route !== '#/' && currentHash.startsWith(route)) return 'is-active';
+    return '';
+  };
 
   header.innerHTML = `
     <div class="header__left">
@@ -16,14 +23,18 @@ export function renderHeader() {
         <span>JS Explorer</span>
       </a>
       <nav class="header__nav">
-        <button class="btn btn--ghost btn--sm nav-btn" data-route="map">
+        <a href="#/" class="btn btn--ghost btn--sm nav-btn ${isActive('#/')}">
+          ${icon('home', 16)}
+          <span>Dashboard</span>
+        </a>
+        <a href="#/map" class="btn btn--ghost btn--sm nav-btn ${isActive('#/map')}">
           ${icon('map', 16)}
-          <span>Map</span>
-        </button>
-        <button class="btn btn--ghost btn--sm nav-btn" data-route="playground">
+          <span>World Map</span>
+        </a>
+        <a href="#/playground" class="btn btn--ghost btn--sm nav-btn ${isActive('#/playground')}">
           ${icon('code', 16)}
           <span>Playground</span>
-        </button>
+        </a>
       </nav>
     </div>
     <div class="header__right">
@@ -51,13 +62,6 @@ export function renderHeader() {
   // Event listeners
   header.querySelector('#theme-toggle').addEventListener('click', toggleTheme);
   header.querySelector('#profile-toggle').addEventListener('click', toggleSidebar);
-
-  header.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const route = btn.dataset.route;
-      window.location.hash = `/${route}`;
-    });
-  });
 }
 
 function toggleTheme() {
