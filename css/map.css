@@ -1,0 +1,342 @@
+/* ============================================================
+   WORLD MAP
+   ============================================================ */
+
+.world-map {
+  position: relative;
+  min-height: calc(100vh - var(--header-height));
+  overflow: hidden;
+  background: var(--canvas);
+}
+
+/* ---- Map Canvas ---- */
+.map-canvas {
+  position: relative;
+  width: 100%;
+  min-height: 800px;
+  padding: var(--space-12) var(--space-8);
+}
+
+/* ---- Map Background Layers ---- */
+.map-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.map-bg__layer {
+  position: absolute;
+  inset: 0;
+}
+
+.map-bg__stars {
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, var(--text-tertiary) 50%, transparent 100%),
+    radial-gradient(1px 1px at 30% 60%, var(--text-tertiary) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 50% 10%, var(--text-tertiary) 50%, transparent 100%),
+    radial-gradient(1px 1px at 70% 80%, var(--text-tertiary) 50%, transparent 100%),
+    radial-gradient(1px 1px at 90% 40%, var(--text-tertiary) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 15% 85%, var(--text-tertiary) 50%, transparent 100%),
+    radial-gradient(1px 1px at 45% 45%, var(--text-tertiary) 50%, transparent 100%),
+    radial-gradient(1px 1px at 85% 15%, var(--text-tertiary) 50%, transparent 100%);
+  opacity: 0.4;
+}
+
+.map-bg__grid {
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.3;
+}
+
+/* ---- Map Title ---- */
+.map-title {
+  position: relative;
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+.map-title__heading {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-3);
+}
+
+.map-title__subheading {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+}
+
+/* ---- World Nodes ---- */
+.worlds-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+}
+
+.world-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.world-node:hover {
+  transform: translateY(-4px);
+}
+
+.world-node:hover .world-node__icon {
+  box-shadow: 0 0 40px var(--accent-subtle);
+  border-color: var(--accent);
+}
+
+.world-node.is-locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.world-node.is-locked::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---- World Icon ---- */
+.world-node__icon {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-2xl);
+  background: var(--surface-1);
+  border: 2px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.world-node__icon svg {
+  width: 48px;
+  height: 48px;
+  color: var(--text-secondary);
+  transition: color var(--duration-normal) var(--ease-out);
+}
+
+.world-node:hover .world-node__icon svg {
+  color: var(--accent);
+}
+
+/* ---- World Progress Ring ---- */
+.world-node__progress {
+  position: absolute;
+  inset: -4px;
+  border-radius: var(--radius-2xl);
+  pointer-events: none;
+}
+
+.world-node__progress-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.world-node__progress-ring circle {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.world-node__progress-ring .ring-bg {
+  stroke: var(--surface-3);
+}
+
+.world-node__progress-ring .ring-fill {
+  stroke: var(--accent);
+  transition: stroke-dashoffset var(--duration-slower) var(--ease-out);
+}
+
+/* ---- World Label ---- */
+.world-node__label {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.world-node__description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  max-width: 200px;
+}
+
+.world-node__badge {
+  margin-top: var(--space-2);
+}
+
+/* ---- Connection Lines ---- */
+.map-connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.map-connections path {
+  fill: none;
+  stroke: var(--border-default);
+  stroke-width: 2;
+  stroke-dasharray: 8 4;
+}
+
+.map-connections path.is-unlocked {
+  stroke: var(--accent);
+  stroke-dasharray: none;
+  opacity: 0.5;
+}
+
+/* ---- Current Position Indicator ---- */
+.world-node__current {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse-glow 2s infinite;
+}
+
+.world-node__current svg {
+  width: 12px;
+  height: 12px;
+  color: white;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--accent-subtle);
+  }
+  50% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+/* ---- Map Legend ---- */
+.map-legend {
+  position: fixed;
+  bottom: var(--space-6);
+  left: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--surface-1) 80%, transparent);
+  backdrop-filter: blur(var(--blur-md));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  z-index: var(--z-sticky);
+}
+
+.map-legend__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.map-legend__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+}
+
+.map-legend__dot--current {
+  background: var(--accent);
+}
+
+.map-legend__dot--completed {
+  background: var(--success);
+}
+
+.map-legend__dot--locked {
+  background: var(--surface-3);
+}
+
+/* ---- Map Stats ---- */
+.map-stats {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: color-mix(in srgb, var(--surface-1) 80%, transparent);
+  backdrop-filter: blur(var(--blur-md));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  z-index: var(--z-sticky);
+}
+
+.map-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.map-stat__icon {
+  width: 16px;
+  height: 16px;
+  color: var(--text-tertiary);
+}
+
+.map-stat__value {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .worlds-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+@media (max-width: 600px) {
+  .worlds-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .world-node__icon {
+    width: 100px;
+    height: 100px;
+  }
+
+  .map-legend, .map-stats {
+    display: none;
+  }
+}
