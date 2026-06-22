@@ -11,19 +11,19 @@ export function renderHeader() {
   const currentHash = window.location.hash || '#/';
 
   const isActive = (route) => {
-    if (route === '#/' && (currentHash === '#/' || currentHash === '')) return 'is-active';
-    if (route !== '#/' && currentHash.startsWith(route)) return 'is-active';
+    if (route === '#/dashboard' && (currentHash === '#/dashboard' || currentHash === '#/' || currentHash === '')) return 'is-active';
+    if (route !== '#/dashboard' && currentHash.startsWith(route)) return 'is-active';
     return '';
   };
 
   header.innerHTML = `
     <div class="header__left">
-      <a href="#/" class="header__logo">
+      <a href="#/dashboard" class="header__logo">
         ${icon('logo', 24)}
         <span>JS Explorer</span>
       </a>
       <nav class="header__nav">
-        <a href="#/" class="btn btn--ghost btn--sm nav-btn ${isActive('#/')}">
+        <a href="#/dashboard" class="btn btn--ghost btn--sm nav-btn ${isActive('#/dashboard')}">
           ${icon('home', 16)}
           <span>Dashboard</span>
         </a>

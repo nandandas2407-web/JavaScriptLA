@@ -24,7 +24,7 @@ export function renderWorldView(worldId) {
         </div>
         <h2 class="text-2xl font-bold mb-2">World Locked</h2>
         <p class="text-secondary mb-6">Complete the prerequisite worlds to unlock ${world.title}</p>
-        <button class="btn btn--primary" onclick="window.location.hash='/map'">
+        <button class="btn btn--primary" onclick="window.location.hash='#/map'">
           ${icon('arrowLeft', 16)}
           Back to Map
         </button>
@@ -67,14 +67,14 @@ export function renderWorldView(worldId) {
   `;
 
   container.querySelector('#back-to-map').addEventListener('click', () => {
-    window.location.hash = '/map';
+    window.location.hash = '#/map';
   });
 
   container.querySelectorAll('.lesson-card').forEach(card => {
     card.addEventListener('click', () => {
       const lessonId = card.dataset.lessonId;
       const worldId = card.dataset.worldId;
-      window.location.hash = `/lesson/${worldId}/${lessonId}`;
+      window.location.hash = `#/lesson/${worldId}/${lessonId}`;
     });
   });
 }

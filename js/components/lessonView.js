@@ -231,7 +231,7 @@ function setupEventListeners(worldId, lessonId, lesson) {
 
   // Back button
   container.querySelector('#back-to-world')?.addEventListener('click', () => {
-    window.location.hash = `/world/${worldId}`;
+    window.location.hash = `#/world/${worldId}`;
   });
 
   // Step navigation
@@ -277,9 +277,9 @@ function setupEventListeners(worldId, lessonId, lesson) {
   container.querySelector('#next-lesson')?.addEventListener('click', () => {
     const next = getNextLesson(worldId, lessonId);
     if (next) {
-      window.location.hash = `/lesson/${next.worldId}/${next.lesson.id}`;
+      window.location.hash = `#/lesson/${next.worldId}/${next.lesson.id}`;
     } else {
-      window.location.hash = '/map';
+      window.location.hash = '#/map';
     }
   });
 }

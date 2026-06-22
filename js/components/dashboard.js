@@ -286,7 +286,7 @@ function setupDashboardListeners() {
     continueBtn.addEventListener('click', () => {
       const next = findNextLesson(store.get('progress.completedLessons') || []);
       if (next) {
-        window.location.hash = `/lesson/${next.world.id}/${next.lesson.id}`;
+        window.location.hash = `#/lesson/${next.world.id}/${next.lesson.id}`;
       }
     });
   }
@@ -294,14 +294,13 @@ function setupDashboardListeners() {
   const dailyChallenge = document.getElementById('daily-challenge');
   if (dailyChallenge) {
     dailyChallenge.addEventListener('click', () => {
-      // Random puzzle from completed lessons
       const completed = store.get('progress.completedLessons') || [];
       if (completed.length > 0) {
         const randomWorld = worlds[Math.floor(Math.random() * worlds.length)];
         const randomLesson = randomWorld.lessons[Math.floor(Math.random() * randomWorld.lessons.length)];
-        window.location.hash = `/lesson/${randomWorld.id}/${randomLesson.id}`;
+        window.location.hash = `#/lesson/${randomWorld.id}/${randomLesson.id}`;
       } else {
-        window.location.hash = '/world/variables-valley';
+        window.location.hash = '#/world/variables-valley';
       }
     });
   }
@@ -309,7 +308,7 @@ function setupDashboardListeners() {
   const reviewPuzzles = document.getElementById('review-puzzles');
   if (reviewPuzzles) {
     reviewPuzzles.addEventListener('click', () => {
-      window.location.hash = '/playground';
+      window.location.hash = '#/playground';
     });
   }
 }

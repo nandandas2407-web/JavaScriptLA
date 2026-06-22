@@ -59,7 +59,7 @@ export function renderWorldMap() {
     node.addEventListener('click', () => {
       const worldId = node.dataset.worldId;
       if (!node.classList.contains('is-locked')) {
-        window.location.hash = `/world/${worldId}`;
+        window.location.hash = `#/world/${worldId}`;
       }
     });
   });

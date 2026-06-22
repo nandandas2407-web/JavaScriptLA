@@ -9,6 +9,7 @@ import { renderWorldMap } from './components/worldMap.js';
 import { renderWorldView } from './components/worldView.js';
 import { renderLessonView } from './components/lessonView.js';
 import { renderSidebar } from './components/sidebar.js';
+import { renderLandingPage } from './components/landingPage.js';
 
 class App {
   constructor() {
@@ -20,9 +21,6 @@ class App {
     const theme = store.get('settings.theme') || 'dark';
     document.documentElement.setAttribute('data-theme', theme);
 
-    // Render header
-    renderHeader();
-
     // Set up routing
     window.addEventListener('hashchange', () => this.route());
 
@@ -33,12 +31,15 @@ class App {
   route() {
     const hash = window.location.hash || '#/';
     const main = document.getElementById('main');
+    const header = document.getElementById('header');
 
     // Close sidebar on navigation
     document.getElementById('sidebar')?.classList.remove('is-open');
 
     // Parse route
     if (hash === '#/' || hash === '#') {
+      this.renderLanding();
+    } else if (hash === '#/dashboard') {
       this.renderDashboard();
     } else if (hash === '#/map') {
       this.renderMap();
@@ -55,34 +56,51 @@ class App {
     } else if (hash === '#/profile') {
       this.renderProfile();
     } else {
-      this.renderMap();
+      this.renderLanding();
     }
 
     // Scroll to top
     main.scrollTop = 0;
   }
 
+  renderLanding() {
+    const header = document.getElementById('header');
+    header.style.display = 'none';
+    renderLandingPage();
+  }
+
   renderDashboard() {
+    const header = document.getElementById('header');
+    header.style.display = '';
     renderHeader();
     renderDashboard();
   }
 
   renderMap() {
+    const header = document.getElementById('header');
+    header.style.display = '';
     renderHeader();
     renderWorldMap();
   }
 
   renderWorld(worldId) {
+    const header = document.getElementById('header');
+    header.style.display = '';
     renderHeader();
     renderWorldView(worldId);
   }
 
   renderLesson(worldId, lessonId) {
+    const header = document.getElementById('header');
+    header.style.display = '';
     renderHeader();
     renderLessonView(worldId, lessonId);
   }
 
   renderPlayground() {
+    const header = document.getElementById('header');
+    header.style.display = '';
+    renderHeader();
     const main = document.getElementById('main');
     main.innerHTML = `
       <div class="container">
@@ -162,6 +180,8 @@ console.log(message);
   }
 
   renderProfile() {
+    const header = document.getElementById('header');
+    header.style.display = '';
     renderHeader();
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.add('is-open');
