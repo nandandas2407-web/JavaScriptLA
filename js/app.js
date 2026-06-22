@@ -71,35 +71,45 @@ class App {
 
   renderDashboard() {
     const header = document.getElementById('header');
+    const app = document.getElementById('app');
     header.style.display = '';
+    app.style.gridTemplateRows = '';
     renderHeader();
     renderDashboard();
   }
 
   renderMap() {
     const header = document.getElementById('header');
+    const app = document.getElementById('app');
     header.style.display = '';
+    app.style.gridTemplateRows = '';
     renderHeader();
     renderWorldMap();
   }
 
   renderWorld(worldId) {
     const header = document.getElementById('header');
+    const app = document.getElementById('app');
     header.style.display = '';
+    app.style.gridTemplateRows = '';
     renderHeader();
     renderWorldView(worldId);
   }
 
   renderLesson(worldId, lessonId) {
     const header = document.getElementById('header');
+    const app = document.getElementById('app');
     header.style.display = '';
+    app.style.gridTemplateRows = '';
     renderHeader();
     renderLessonView(worldId, lessonId);
   }
 
   renderPlayground() {
     const header = document.getElementById('header');
+    const app = document.getElementById('app');
     header.style.display = '';
+    app.style.gridTemplateRows = '';
     renderHeader();
     const main = document.getElementById('main');
     main.innerHTML = `
@@ -181,7 +191,9 @@ console.log(message);
 
   renderProfile() {
     const header = document.getElementById('header');
+    const app = document.getElementById('app');
     header.style.display = '';
+    app.style.gridTemplateRows = '';
     renderHeader();
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.add('is-open');

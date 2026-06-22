@@ -9,9 +9,11 @@ import { worlds } from '../content/curriculum.js';
 export function renderLandingPage() {
   const main = document.getElementById('main');
   const header = document.getElementById('header');
+  const app = document.getElementById('app');
   
-  // Hide header on landing page
+  // Hide header and let main fill full viewport on landing page
   if (header) header.style.display = 'none';
+  if (app) app.style.gridTemplateRows = '0fr 1fr';
 
   const hasStarted = (store.get('progress.completedLessons') || []).length > 0;
 
@@ -214,11 +216,6 @@ console.<span class="code-function">log</span>(message);
       </footer>
     </div>
   `;
-
-  // Show header when navigating away
-  window.addEventListener('hashchange', () => {
-    if (header) header.style.display = '';
-  }, { once: true });
 }
 
 export default renderLandingPage;
