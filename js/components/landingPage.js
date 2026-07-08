@@ -5,6 +5,13 @@
 import { store } from '../stores/store.js';
 import { icon } from '../lib/icons.js';
 import { worlds } from '../content/curriculum.js';
+import { renderHeroBanner } from './banners/heroBanner.js';
+import { renderStatsBanner, initStatCounters, renderAchievementBanner } from './banners/statsBanner.js';
+import { renderTestimonialBanner, renderSocialProofBanner } from './banners/testimonialBanner.js';
+import { renderCTABanner, renderGradientCTABanner } from './banners/ctaBanner.js';
+import { renderQuoteBanner, renderCodeQuoteBanner } from './banners/quoteBanner.js';
+import { renderFeatureBanner, renderFeatureGridBanner, renderCodeFeatureBanner } from './banners/featureBanner.js';
+import { renderAnnouncementBanner, renderCompactAnnouncement } from './banners/announcementBanner.js';
 
 export function renderLandingPage() {
   const main = document.getElementById('main');
@@ -19,121 +26,78 @@ export function renderLandingPage() {
 
   main.innerHTML = `
     <div class="landing">
-      <!-- Hero Section -->
-      <section class="landing__hero">
-        <div class="landing__hero-bg">
-          <div class="landing__grid-lines"></div>
-          <div class="landing__glow landing__glow--1"></div>
-          <div class="landing__glow landing__glow--2"></div>
-        </div>
+      <!-- Hero Banner -->
+      ${renderHeroBanner()}
 
-        <div class="landing__hero-content">
-          <div class="landing__badge animate-fade-in-up">
-            <span class="badge badge--accent" style="padding: 6px 14px; font-size: var(--text-sm);">
-              ${icon('zap', 14)}
-              Free & Open Source
-            </span>
-          </div>
-
-          <h1 class="landing__title animate-fade-in-up" style="animation-delay: 0.1s;">
-            Learn<br>
-            <span class="landing__title-highlight">JavaScript</span><br>
-            by Doing
-          </h1>
-
-          <p class="landing__subtitle animate-fade-in-up" style="animation-delay: 0.2s;">
-            Interactive lessons, real code challenges, and a visual learning path.
-            Master JavaScript from zero to advanced — right in your browser.
-          </p>
-
-          <div class="landing__cta animate-fade-in-up" style="animation-delay: 0.3s;">
-            <a href="#/dashboard" class="btn btn--primary btn--lg" id="landing-start">
-              ${icon('play', 18)}
-              ${hasStarted ? 'Continue Learning' : 'Start Learning'}
-            </a>
-            <a href="#/playground" class="btn btn--secondary btn--lg">
-              ${icon('code', 18)}
-              Try Playground
-            </a>
-          </div>
-
-          <div class="landing__hero-code animate-fade-in-up" style="animation-delay: 0.4s;">
-            <div class="landing__code-window">
-              <div class="landing__code-header">
-                <span class="landing__code-dot" style="background: #ff5f57;"></span>
-                <span class="landing__code-dot" style="background: #febc2e;"></span>
-                <span class="landing__code-dot" style="background: #28c840;"></span>
-                <span class="landing__code-title">lesson.js</span>
-              </div>
-              <pre class="landing__code-body"><code><span class="code-keyword">function</span> <span class="code-function">greet</span>(<span class="code-param">name</span>) {
-  <span class="code-keyword">return</span> <span class="code-string">\`Hello, \${name}!\`</span>;
-}
-
-<span class="code-keyword">const</span> message = <span class="code-function">greet</span>(<span class="code-string">"World"</span>);
-console.<span class="code-function">log</span>(message);
-<span class="code-comment">// → Hello, World!</span></code></pre>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Features Section -->
+      <!-- Announcement Banner -->
       <section class="landing__section">
         <div class="landing__container">
-          <div class="landing__section-header">
-            <h2 class="landing__section-title">Everything you need to master JavaScript</h2>
-            <p class="landing__section-subtitle">Built with care for complete beginners and advancing developers</p>
-          </div>
-
-          <div class="landing__features">
-            <div class="landing__feature card">
-              <div class="landing__feature-icon" style="background: var(--accent-subtle); color: var(--accent-text);">
-                ${icon('book', 24)}
-              </div>
-              <h3 class="landing__feature-title">27 Lessons</h3>
-              <p class="landing__feature-desc">
-                Progressive content from variables to Node.js.
-                Each lesson breaks into small, digestible steps.
-              </p>
-            </div>
-
-            <div class="landing__feature card">
-              <div class="landing__feature-icon" style="background: var(--success-subtle); color: var(--success);">
-                ${icon('puzzle', 24)}
-              </div>
-              <h3 class="landing__feature-title">50+ Puzzles</h3>
-              <p class="landing__feature-desc">
-                Predict output, fix bugs, fill blanks.
-                Test your understanding with hands-on challenges.
-              </p>
-            </div>
-
-            <div class="landing__feature card">
-              <div class="landing__feature-icon" style="background: var(--warning-subtle); color: var(--warning);">
-                ${icon('map', 24)}
-              </div>
-              <h3 class="landing__feature-title">9 Worlds</h3>
-              <p class="landing__feature-desc">
-                A visual learning path through JavaScript.
-                Unlock new worlds as you complete lessons.
-              </p>
-            </div>
-
-            <div class="landing__feature card">
-              <div class="landing__feature-icon" style="background: var(--error-subtle); color: var(--error);">
-                ${icon('terminal', 24)}
-              </div>
-              <h3 class="landing__feature-title">Code Playground</h3>
-              <p class="landing__feature-desc">
-                Write and run JavaScript instantly.
-                Experiment freely with a safe sandbox.
-              </p>
-            </div>
-          </div>
+          ${renderCompactAnnouncement({
+            message: '🎉 New: ES2024 Module Now Available!',
+            link: { text: 'Start Learning', url: '#/dashboard' }
+          })}
         </div>
       </section>
 
-      <!-- Learning Path Preview -->
+      <!-- Features Grid Banner -->
+      <section class="landing__section">
+        <div class="landing__container">
+          ${renderFeatureGridBanner({
+            title: 'Everything You Need to Master JavaScript',
+            subtitle: 'Built with care for complete beginners and advancing developers',
+            features: [
+              { icon: '📚', title: '27 Lessons', description: 'Progressive content from variables to Node.js. Each lesson breaks into small, digestible steps.' },
+              { icon: '🧩', title: '50+ Puzzles', description: 'Predict output, fix bugs, fill blanks. Test your understanding with hands-on challenges.' },
+              { icon: '🗺️', title: '9 Worlds', description: 'A visual learning path through JavaScript. Unlock new worlds as you complete lessons.' },
+              { icon: '💻', title: 'Code Playground', description: 'Write and run JavaScript instantly. Experiment freely with a safe sandbox.' },
+              { icon: '🏆', title: 'Achievements', description: 'Earn badges and track your progress. Stay motivated with milestones.' },
+              { icon: '🎯', title: 'Real Projects', description: 'Build real-world applications. Apply what you learn in practical scenarios.' }
+            ]
+          })}
+        </div>
+      </section>
+
+      <!-- Code Feature Banner -->
+      <section class="landing__section landing__section--dark">
+        <div class="landing__container">
+          ${renderCodeFeatureBanner({
+            title: 'Learn by Writing Real Code',
+            description: 'Every lesson includes interactive code examples. Write, run, and understand JavaScript hands-on.',
+            code: \`
+// Variables and Data Types
+let studentName = "Alex";
+const lessonsCompleted = 12;
+const isProMember = true;
+
+// Functions
+function calculateProgress(total, completed) {
+  return Math.round((completed / total) * 100);
+}
+
+const progress = calculateProgress(27, lessonsCompleted);
+console.log(\`\${studentName}'s progress: \${progress}%\`);
+// → Alex's progress: 44%\`,
+            language: 'JavaScript'
+          })}
+        </div>
+      </section>
+
+      <!-- Stats Banner -->
+      <section class="landing__section">
+        <div class="landing__container">
+          ${renderStatsBanner({
+            stats: [
+              { value: 100, suffix: '+', label: 'Sub-steps', description: 'Detailed learning units' },
+              { value: 21, label: 'EJS Chapters', description: 'From Eloquent JavaScript' },
+              { value: 9, label: 'Worlds', description: 'Progressive learning paths' },
+              { value: 100, suffix: '%', label: 'Free', description: 'No hidden costs' }
+            ],
+            variant: 'accent'
+          })}
+        </div>
+      </section>
+
+      <!-- Learning Path Section -->
       <section class="landing__section landing__section--dark">
         <div class="landing__container">
           <div class="landing__section-header">
@@ -156,41 +120,118 @@ console.<span class="code-function">log</span>(message);
         </div>
       </section>
 
-      <!-- Stats Section -->
+      <!-- Quote Banner -->
       <section class="landing__section">
         <div class="landing__container">
-          <div class="landing__stats">
-            <div class="landing__stat">
-              <div class="landing__stat-value">100+</div>
-              <div class="landing__stat-label">Sub-steps</div>
-            </div>
-            <div class="landing__stat">
-              <div class="landing__stat-value">21</div>
-              <div class="landing__stat-label">EJS Chapters</div>
-            </div>
-            <div class="landing__stat">
-              <div class="landing__stat-value">9</div>
-              <div class="landing__stat-label">Worlds</div>
-            </div>
-            <div class="landing__stat">
-              <div class="landing__stat-value">100%</div>
-              <div class="landing__stat-label">Free</div>
-            </div>
+          ${renderQuoteBanner({
+            quote: 'The best way to learn programming is by doing it. Not by reading about it, not by watching someone else do it, but by doing it yourself.',
+            author: 'Marijn Haverbeke',
+            source: 'Author of Eloquent JavaScript'
+          })}
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section class="landing__section landing__section--dark">
+        <div class="landing__container">
+          <div class="landing__section-header">
+            <h2 class="landing__section-title">What Our Learners Say</h2>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6);">
+            ${renderTestimonialBanner({
+              quote: 'JS Explorer made JavaScript click for me. The visual learning path and hands-on puzzles made complex concepts feel simple.',
+              author: 'Sarah Chen',
+              role: 'Frontend Developer',
+              avatar: { initial: 'S', gradient: 'linear-gradient(135deg, #5e6ad2, #7b87e0)' },
+              rating: 5
+            })}
+            ${renderTestimonialBanner({
+              quote: 'I tried many courses before, but this is the first one that stuck. The interactive approach is exactly what I needed.',
+              author: 'Marcus Johnson',
+              role: 'Career Switcher',
+              avatar: { initial: 'M', gradient: 'linear-gradient(135deg, #2da44e, #56d364)' },
+              rating: 5
+            })}
+            ${renderTestimonialBanner({
+              quote: 'The code playground is brilliant. I can experiment freely without breaking anything. Highly recommend for beginners!',
+              author: 'Priya Patel',
+              role: 'Computer Science Student',
+              avatar: { initial: 'P', gradient: 'linear-gradient(135deg, #d4a72c, #e3b341)' },
+              rating: 5
+            })}
           </div>
         </div>
       </section>
 
-      <!-- Final CTA -->
-      <section class="landing__section landing__cta-section">
-        <div class="landing__container" style="text-align: center;">
-          <h2 class="landing__section-title">Ready to start your JavaScript journey?</h2>
-          <p class="landing__section-subtitle" style="margin-bottom: var(--space-8);">
-            No signup required. No ads. Just you and JavaScript.
-          </p>
-          <a href="#/dashboard" class="btn btn--primary btn--lg">
-            ${icon('play', 18)}
-            ${hasStarted ? 'Continue Learning' : 'Get Started — It\'s Free'}
-          </a>
+      <!-- Social Proof -->
+      <section class="landing__section">
+        <div class="landing__container">
+          ${renderSocialProofBanner({
+            trustText: 'Based on the book trusted by developers worldwide',
+            logos: ['Eloquent JavaScript', 'MDN Web Docs', 'JavaScript.info', 'freeCodeCamp']
+          })}
+        </div>
+      </section>
+
+      <!-- Feature Highlight Banners -->
+      <section class="landing__section landing__section--dark">
+        <div class="landing__container">
+          <div class="landing__section-header">
+            <h2 class="landing__section-title">Why JS Explorer?</h2>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-6);">
+            ${renderFeatureBanner({
+              icon: '🎯',
+              title: 'Progressive Learning',
+              description: 'Start with basics and build up to advanced concepts. Each lesson builds on the previous one.',
+              gradient: 'linear-gradient(135deg, var(--accent-subtle), transparent)'
+            })}
+            ${renderFeatureBanner({
+              icon: '⚡',
+              title: 'Instant Feedback',
+              description: 'See results immediately. Run code, get feedback, and learn from your mistakes in real-time.',
+              gradient: 'linear-gradient(135deg, var(--success-subtle), transparent)'
+            })}
+            ${renderFeatureBanner({
+              icon: '🏆',
+              title: 'Track Progress',
+              description: 'Earn achievements, maintain streaks, and visualize your journey from beginner to expert.',
+              gradient: 'linear-gradient(135deg, var(--warning-subtle), transparent)'
+            })}
+          </div>
+        </div>
+      </section>
+
+      <!-- Code Quote Banner -->
+      <section class="landing__section">
+        <div class="landing__container">
+          ${renderCodeQuoteBanner({
+            quote: 'Programs must be written for people to read, and only incidentally for machines to execute.',
+            author: 'Harold Abelson',
+            language: 'wisdom.js'
+          })}
+        </div>
+      </section>
+
+      <!-- Final CTA Banner -->
+      <section class="landing__section">
+        <div class="landing__container">
+          ${renderGradientCTABanner({
+            title: 'Ready to Start Your JavaScript Journey?',
+            description: 'No signup required. No ads. Just you and JavaScript.',
+            action: { text: 'Get Started — It\'s Free', url: '#/dashboard' }
+          })}
+        </div>
+      </section>
+
+      <!-- Achievement Banner -->
+      <section class="landing__section">
+        <div class="landing__container">
+          ${renderAchievementBanner({
+            title: 'Your Journey Starts Here',
+            description: 'Join thousands of learners who have mastered JavaScript through practice.',
+            gradient: 'linear-gradient(135deg, var(--accent), var(--accent-hover))'
+          })}
         </div>
       </section>
 
@@ -216,6 +257,9 @@ console.<span class="code-function">log</span>(message);
       </footer>
     </div>
   `;
+
+  // Initialize stat counters
+  setTimeout(() => initStatCounters(), 100);
 }
 
 export default renderLandingPage;
