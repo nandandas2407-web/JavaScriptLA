@@ -63,20 +63,7 @@ export function renderLandingPage() {
           ${renderCodeFeatureBanner({
             title: 'Learn by Writing Real Code',
             description: 'Every lesson includes interactive code examples. Write, run, and understand JavaScript hands-on.',
-            code: \`
-// Variables and Data Types
-let studentName = "Alex";
-const lessonsCompleted = 12;
-const isProMember = true;
-
-// Functions
-function calculateProgress(total, completed) {
-  return Math.round((completed / total) * 100);
-}
-
-const progress = calculateProgress(27, lessonsCompleted);
-console.log(\`\${studentName}'s progress: \${progress}%\`);
-// → Alex's progress: 44%\`,
+            code: '// Variables and Data Types\nlet studentName = "Alex";\nconst lessonsCompleted = 12;\nconst isProMember = true;\n\n// Functions\nfunction calculateProgress(total, completed) {\n  return Math.round((completed / total) * 100);\n}\n\nconst progress = calculateProgress(27, lessonsCompleted);\nconsole.log(studentName + "\'s progress: " + progress + "%");\n// → Alex\'s progress: 44%',
             language: 'JavaScript'
           })}
         </div>
